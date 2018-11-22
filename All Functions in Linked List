@@ -1,8 +1,4 @@
-/* Arjit Yadav
- Roll No- 11707
- Data Structure Assignment
-  */
- 
+
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
