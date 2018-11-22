@@ -1,0 +1,495 @@
+/* Arjit Yadav
+ Roll No- 11707
+ Data Structure Assignment
+  */
+ 
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+struct student
+{
+   int roll_No;
+   char name[50];
+   double marks;
+   struct student *next;
+};
+
+struct student *head;     //Head is declared and used anywhere
+
+struct student* AllocateNode()  //Function create a node and return pointer to new node,no input is cpme
+{
+
+   student *ptr=(struct student*)malloc(sizeof(struct student));  //creates new node
+
+   cout<<"Enter Roll No of student"<<endl;
+   cin>>ptr-> roll_No;
+
+   cout<<"Enter the name of student"<<endl;
+   cin>>ptr-> name;
+
+   cout<<"Enter the marks"<<endl;
+   cin>>ptr-> marks;
+
+   ptr->next=NULL;  //node points to nothing
+
+   cout<<"code ran successfully"<<endl;
+
+   return ptr;
+
+}
+
+void PrependNode()  //Add node at starting point of list
+{
+ if(head==NULL)//If list is empty simply Allocate a node and which point head to new node
+ {
+    student* temp;
+    temp=AllocateNode();
+    head=temp;    
+ }
+
+ else// If list contains some elements
+ {
+
+    student* temp2;
+    temp2=AllocateNode(); 
+    temp2->next=head;
+    head=temp2;
+ }
+
+}
+
+
+void AppendNode() //Add a node at end point of list
+{
+    student* temp3=AllocateNode(); //Call AllocateNode to creates a new node
+    temp3->next=NULL;
+    struct student *last=head; //This step wuold be used to traverse through linked list
+
+    if(head==NULL) //If linked list is empty
+    {
+        head=temp3;
+        return;
+    }
+
+    else
+    {
+       while(last->next!=NULL)  //Search for last node
+       {
+           last=last->next;
+       }
+        last->next=temp3;
+        return;
+    }
+
+
+}
+struct student* SearchList(int ID_No) //This function searches for the element with given id no in the list
+    {
+        student *temp4=head;
+
+
+        while(temp4!=NULL)
+        {
+            if(temp4->roll_No==ID_No) //Checking if roll no equals to  IDNo
+            {
+                return temp4;
+            }
+            temp4=temp4->next;
+        }
+
+    }
+
+void InsertNode(int ID_No) //Function inserts node after given ID_No
+    {
+        student *temp6=SearchList(ID_No); //Makes use of previously defined SearchList function
+        student *temp7=AllocateNode();
+        temp7->next=temp6->next;  //These steps Inserts node in between the list
+        temp6->next=temp7;
+    }
+
+void PrintNode(int ID_No) //This node prints node after a given ID_No
+    {
+        student *temp8=SearchList(ID_No);
+        cout<<"Name is "<<temp8->name<<endl;
+        cout<<"Marks is "<<temp8->marks<<endl;
+    }
+
+void PrintList() //This function prints whole list
+    {
+        student *temp9=head;
+        while(temp9!=NULL) //Traversing whole list
+        {
+            cout<<"Roll No is "<<temp9->roll_No<<endl;  //Printing whole list
+            cout<<"Name is "<<temp9->name<<endl;
+            cout<<"Marks is "<<temp9->marks<<endl;
+            temp9=temp9->next;
+        }
+
+    }
+
+void DeleteNode(int idno) //This function deletes node after given ID_No
+    {
+        if(head==NULL)
+        {
+            return;
+        }
+        else
+        {
+         student *temp10=SearchList(idno); //Returns pointer to the node that contains ID_No
+         if(temp10==NULL)
+         {
+             cout<<"ID NO not found"<<endl;
+         }
+         
+         else
+         {
+         student *temp=head;
+         while(temp->next!=temp10) //Traverses to get pointer to previous node
+         {
+            temp=temp->next;
+         }
+         temp->next=temp->next->next; //Deletes Node
+         temp10->next=NULL;
+        }
+            
+        }
+    }
+
+void DeleteFirstNode()
+{ 
+ if(head!=NULL)
+ {
+  student *temp=head; 
+  head=head->next; //Changes head of list deleting first node;
+  temp->next=NULL;
+  free(temp);
+ }
+ else
+ {
+  cout<<"No element was in list"<<endl;   
+ }
+}
+	
+void DeleteLastNode()
+{	
+    if(head!=NULL)
+    {
+     student *temp=head;
+     while(temp->next->next!=NULL) //Traverses to second last element
+     {
+        temp=temp->next;
+     }
+     temp->next=NULL; //Changes next pointer of second last element to NULL
+    }
+    else
+    {
+        cout<<"List was Empty"<<endl;
+    }
+
+}
+
+void ReverseList()
+    {
+        struct student* prev=NULL;
+        struct student* current=head;
+        struct student* next;
+        if(head==NULL)
+         {
+           cout<<"Linked List is Empty"<<endl;
+           return;
+         }
+
+        else if(head->next==NULL)
+         {
+           return; //If list contains only one element no reversal is required
+         }
+		else
+		{
+
+        while(current!=NULL)
+         {
+            next=current->next;
+            current->next=prev;
+            prev=current;       //Reverses the list
+            current=next;
+         }
+         head=prev; //Head becomes the end of previously last element
+        }
+         PrintList(); //Prints the whole reversed list
+    }
+
+void ListIntersection()
+{
+	cout<<"To add first list add first node "<<endl;
+	head=AllocateNode();
+	cout<<"For first list "<<endl;
+	cout<<"Press 0 to exit inputting list"<<endl;
+	cout<<"Press 1 to add next node at the beginning"<<endl;
+	cout<<"Press 2 to add next node print list"<<endl;
+	cout<<"Press 3 to add next node at the end"<<endl;
+	int i=1;
+
+	while(i==1) //Inputs First Linked List
+	{
+		int j;
+		cin>>j;
+		switch(j)
+		{
+			case 0:i=0;
+			break;
+			case 1:PrependNode();
+			break;
+			case 2:PrintList();
+			break;
+			case 3:AppendNode();
+			break;
+		}
+
+   }
+   student *temp1 = head;
+	cout<<"To add second list add first node "<<endl;
+	head = AllocateNode();
+	cout << "For second list " << endl;
+	cout<<"Press 0 to exit inputting list"<<endl;
+	cout<<"Press 1 for adding node at beginning"<<endl;
+	cout<<"Press 2 for adding next node print list"<<endl;
+	cout<<"Press 3 for adding node at end"<<endl;
+
+
+	int x=1;
+	while(x==1) //Adds Second List
+	{
+		int j;
+		cin>>j;
+		switch(j)
+		{
+			case 0:x=0;
+			break;
+			case 1:PrependNode();
+			break;
+			case 2:PrintList();
+			break;
+			case 3:AppendNode();
+			break;
+		}
+
+	}
+	student *temp2=head;
+
+	cout<<"Intersection of two linked lists is "<<endl;
+	while(temp1!=NULL)
+	{
+		while(temp2!=NULL)
+		{
+			if(temp1->roll_No==temp2->roll_No) //Checks whether nodes of two lists are same cnsidering that roll_No are unique 
+                            {
+				cout<<temp1->roll_No<<endl;
+				cout<<temp1->name<<endl;   //If elements are same print
+				cout<<temp1->marks<<endl;
+				temp2=temp2->next;
+			}
+			else
+			{
+				temp2=temp2->next;
+			}
+
+		}
+		temp1=temp1->next;
+	}
+
+}
+
+void ListUnion()
+{
+	cout<<"To add first list add first node "<<endl;
+	head=AllocateNode();
+	cout<<"For first list "<<endl;
+	cout<<"Press 0 to exit inputting list"<<endl;
+	cout<<"Press 1 to add next node at the beginning"<<endl;
+	cout<<"Press 2 to add next node print list"<<endl;
+	cout<<"Press 3 to add next node at the end"<<endl;
+	int i=1;
+	int j;
+	
+	while(i==1) //inputs first list
+	{
+		cin>>j;
+		switch(j)
+		{
+			case 0:i=0;
+			break;
+			case 1:PrependNode();
+			break;
+			case 2:PrintList();
+			break;
+			case 3:AppendNode();
+			break;
+		}
+
+
+    }
+
+    student *temp1=head;
+    student *temp3 = head;
+
+	cout<<"To add second list add first node "<<endl;
+	head=AllocateNode();
+	cout<<"For second list "<<endl;
+	cout<<"Press 0 to exit inputting list"<<endl;
+	cout<<"Press 1 to add next node at the beginning"<<endl;
+	cout<<"Press 2 to add next node print list"<<endl;
+	cout<<"Press 3 to add next node at the end"<<endl;
+
+i=1;
+
+	while(i==1) //Inputs second list
+	{
+		cin>>j;
+		switch(j)
+		{
+			case 0:i=0;
+			break;
+			case 1:PrependNode();
+			break;
+			case 2:PrintList();
+			break;
+			case 3:AppendNode();
+			break;
+		}
+}
+	student *temp2=head;
+
+	cout<<"The Union Of Two Lists is "<<endl;
+	while(temp1!=NULL)
+	{
+		cout<<temp1->roll_No<<endl;  //Prints first list as it is
+		cout<<temp1->name<<endl;
+		cout<<temp1->marks<<endl;
+		temp1=temp1->next;
+	}
+	temp1=head;
+
+	while(temp2!=NULL)
+	{
+	    temp1=temp3;
+	    int counter = -1;
+		while(temp1!=NULL)
+		{
+			if(temp1->roll_No!=temp2->roll_No) //Checks whether element of list 2 is same as of list1
+			{
+				temp1=temp1->next;
+			}
+			else
+			{
+			    if (counter != 1)
+			    counter = 1; //If elements are not equal change counter to 1
+                temp1=temp1->next;
+			}
+
+		}
+		if(counter == -1) //If elements are not equal(counter=-1) print the elements 
+            {
+			cout << temp2->roll_No;
+			cout << "\n" << temp2->name << "\n";
+			cout << temp2->marks << "\n";
+            }
+            temp2=temp2->next;
+	}
+}
+
+void FindMthToLast() //Function finds out mth element to last 
+{
+	int i,m,element;
+	student *temp=head;
+	cout<<"Enter Value of M for which you want to find Mth from last element"<<endl;
+	cin>>m;
+	while(temp!=NULL)
+	{
+		temp=temp->next; //Gets the size of Linked List
+		i++;
+	}
+	temp=head;
+	element=i-m+1; //At beginning it is i-m+1 term
+	for(int i=1;i<=element;i++)
+	{
+		temp=temp->next; //Get the pointer to mth element from last
+	}
+    cout<<"Mth Element from last is"<<endl;
+	cout<<temp->roll_No;
+	cout<<temp->name;  //Print the Node
+	cout<<temp->marks;
+}
+
+int main()
+{
+	head = AllocateNode();
+	cout<<" Your choice"<<endl;
+	cout<<"0: exit the loop"<<endl;
+	cout<<"1: Allocate Node"<<endl;
+	cout<<"2: PrependNode"<<endl;
+	cout<<"3: AppendNode"<<endl;
+	cout<<"4: InsertNode"<<endl;
+	cout<<"5: SearchList"<<endl;
+	cout<<"6: PrintNode"<<endl;
+	cout<<"7: PrintList"<<endl;
+	cout<<"8: DeleteFirstNode"<<endl;
+	cout<<"9: DeleteLastNode"<<endl;
+	cout<<"10: DeleteNode"<<endl;
+	cout<<"11: ReverseList"<<endl;
+	cout<<"12: ListUnion"<<endl;
+	cout<<"13: ListIntersection"<<endl;
+	cout<<"14: FindMthToLast"<<endl; 
+	int a,n,i=1;
+cout<<"Enter:";
+
+	while(i==1) //It creates a interface to use different functions
+	{
+		cin>>a;
+		switch(a)
+		{
+			case 0: i=0;
+				    break;
+			case 1: cout<<"A node has been allocated";
+					break;
+			case 2: PrependNode();
+		        	break;
+			case 3: AppendNode();
+					break;
+			case 4: cout<<"Insert ID_NO"<<endl;
+					cin>>n;
+					InsertNode(n);
+					break;
+			case 5: cout<<"enter the ID_NO";
+				  	cin>>n;
+					SearchList(n);
+					PrintNode(n);
+					break;
+			case 6: cout<<"enter the ID_NO";
+				  	cin>>n;
+					PrintNode(n);
+					break;
+			case 7: PrintList();
+					break;
+			case 8: DeleteFirstNode();
+					break;
+			case 9: DeleteLastNode();
+					break;
+			case 10: cout<<"enter the ID_NO";
+				  	cin>>n;
+				  	DeleteNode(n);
+					break;
+			case 11: ReverseList();
+					break;
+		    case 12: ListUnion();
+		    		break;
+			case 13: ListIntersection();
+					break;
+			case 14: FindMthToLast();
+			  		break;
+			  		cout<<"Program completed"<<endl;
+	}
+}
+    system("pause");
+	return 0;
+}
