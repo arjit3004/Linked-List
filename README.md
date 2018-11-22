@@ -3,10 +3,10 @@
 Requirements
 Use the following struct for you linked list functions.
 struct student {
-int rollNo;
-char name[50];
-double marks;
-struct node *next;
+       int rollNo;
+      char name[50];
+      double marks;
+     struct node *next;
 };
 You must implement the following linked list functions in C/C++. Your program must be
 modular with good interface for user options. Once program is run, it must be able to call all
